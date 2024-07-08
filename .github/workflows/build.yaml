@@ -1,0 +1,29 @@
+name: Build python app
+
+on:
+  push:
+    branches: main
+    
+jobs:
+  build-fastapi-app:
+    name: Build FastAPI App
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+      
+      - name: Install Dependencies
+        run: |
+          cd content
+          python -m pip install -U pip
+          python -m pip install -r requirements.txt
+
+      
