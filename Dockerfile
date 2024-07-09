@@ -9,13 +9,11 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-
 # Copy requirements.txt file
 COPY requirements.txt /code/
 
-
 # Install dependencies
-RUN pip install -r requirements.txt
+RUN pip install -r /code/requirements.txt
 
 # Copy the rest of the project code
 COPY . /code
