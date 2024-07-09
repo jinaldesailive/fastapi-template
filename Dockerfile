@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements.txt file
-COPY requirements.txt requirements.txt
+COPY /content/requirements.txt requirements.txt
 
 # Install dependencies
 RUN pip install -r requirements.txt
