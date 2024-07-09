@@ -37,7 +37,7 @@ jobs:
       
       - name: Build and push
         run: |
-          docker build --network=host --file Dockerfile --tag "us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/fastapi:${{github.run_number}}"
+          docker build --tag "us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/fastapi:${{github.run_number}}" .
       
       - name: Push to artifact registry
         run: |
