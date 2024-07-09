@@ -2,7 +2,7 @@
 FROM python:3.11-slim-buster
 
 # Set the current working directory to /app.
-WORKDIR /app
+#WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -16,11 +16,11 @@ COPY /content/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Copy the rest of the project files
-COPY /content /app
+COPY /content .
 
 # Expose the port on which the FastAPI app will run
 ENV PORT=8080
 EXPOSE $PORT
 
 # Set the command to run the uvicorn server at 8000 port.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
