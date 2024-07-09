@@ -16,7 +16,7 @@ COPY /content/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Copy the rest of the project files
-COPY . /app
+COPY /content /app
 
 # Expose the port on which the FastAPI app will run
 ENV PORT=8080
