@@ -1,8 +1,8 @@
 # Start from the official Python base image 3.11
 FROM python:3.11-slim-buster
 
-# Set the current working directory to /code.
-WORKDIR /code
+# Set the current working directory to /app.
+WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -10,13 +10,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements.txt file
-COPY requirements.txt /code/
+COPY requirements.txt requirements.txt
 
 # Install dependencies
-RUN pip install -r /code/requirements.txt
+RUN pip install -r requirements.txt
 
-# Copy the rest of the project code
-COPY . /code
+# Copy the rest of the project files
+COPY . /app
 
 # Expose the port on which the FastAPI app will run
 ENV PORT=8080
