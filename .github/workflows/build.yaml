@@ -29,8 +29,8 @@ jobs:
       - name: configure gcp credentials
         uses: google-github-actions/auth@v1
         with:
-          workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
 
       - name: auth docker
         run: gcloud --quiet auth configure-docker us-east4-docker.pkg.dev
