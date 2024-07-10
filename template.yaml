@@ -6,7 +6,7 @@ metadata:
   description: An example template that builds FastAPI docker image and push it to the Artifact Registry
   tags:
     - backstage
-    - bigquery
+    - fastapi
 spec:
   owner: user:guest
   type: service
