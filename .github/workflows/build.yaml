@@ -1,8 +1,15 @@
-name: Build python app
+name: Build docker image ${{ values.cloudrun_service_name }}
 
 on:
   push:
     branches: main
+{% raw %}
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+env:
+  GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+  GCP_SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
     
 jobs:
   build-fastapi-app:
@@ -17,30 +24,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      #- name: Setup Python
-      #  uses: actions/setup-python@v5
-      
-      #- name: Install Dependencies
-      #  run: |
-      #    cd content
-      #    python -m pip install -U pip
-      #    python -m pip install -r requirements.txt
-
       - name: configure gcp credentials
         uses: google-github-actions/auth@v1
         with:
-          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
 
       - name: auth docker
         run: gcloud --quiet auth configure-docker us-east4-docker.pkg.dev
       
       - name: Build and push
         run: |
-          docker build --tag "us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/fastapi:${{github.run_number}}" .
+          docker build --tag "us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ values.cloudrun_service_name }}:${{github.run_number}}" .
       
       - name: Push to artifact registry
         run: |
-          docker push us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/fastapi:${{github.run_number}}
-          gcloud container images add-tag us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/fastapi:${{github.run_number}} us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/fastapi:latest
-      
+          docker push us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ values.cloudrun_service_name }}:${{github.run_number}}
+          gcloud container images add-tag us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ values.cloudrun_service_name }}:${{github.run_number}} us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ values.cloudrun_service_name }}:latest
+{% endraw %}  
