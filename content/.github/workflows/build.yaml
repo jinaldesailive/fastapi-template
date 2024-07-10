@@ -3,14 +3,16 @@ name: Build docker image ${{ values.cloudrun_service_name }}
 on:
   push:
     branches: main
-{% raw %}
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+
 env:
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   GCP_SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
   CLOUDRUN_SERVICE_NAME: ${{ values.cloudrun_service_name }}
+  
+{% raw %}
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
     
 jobs:
   build-fastapi-app:
