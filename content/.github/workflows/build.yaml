@@ -10,6 +10,7 @@ concurrency:
 env:
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   GCP_SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
+  CLOUDRUN_SERVICE_NAME: ${{ values.cloudrun_service_name }}
     
 jobs:
   build-fastapi-app:
@@ -35,10 +36,10 @@ jobs:
       
       - name: Build and push
         run: |
-          docker build --tag "us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ values.cloudrun_service_name }}:${{github.run_number}}" .
+          docker build --tag "us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ env.CLOUDRUN_SERVICE_NAME }}:${{github.run_number}}" .
       
       - name: Push to artifact registry
         run: |
-          docker push us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ values.cloudrun_service_name }}:${{github.run_number}}
-          gcloud container images add-tag us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ values.cloudrun_service_name }}:${{github.run_number}} us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ values.cloudrun_service_name }}:latest
+          docker push us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ env.CLOUDRUN_SERVICE_NAME }}:${{github.run_number}}
+          gcloud container images add-tag us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ env.CLOUDRUN_SERVICE_NAME }}:${{github.run_number}} us-east4-docker.pkg.dev/png-gcp-learning-poc/python-fastapi/${{ env.CLOUDRUN_SERVICE_NAME }}:latest
 {% endraw %}  
